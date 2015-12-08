@@ -6,6 +6,11 @@
       -->
     <div
       class="simple-board">
+      <div ng-model="ctrl.boards" ng-repeat="board in boards" ng-click="ctrl.setEditedBoard(board)">
+        <h1> {{board.title}} </h1>
+        <h2> {{board.description}} </h2>
+        <p> Public: {{board.isPublic}} </p>
+      </div>
     </div>
 
   </div>
