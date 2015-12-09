@@ -5,12 +5,10 @@
       be able to actually see the editing form when you click on a board.
       -->
     <div
-      class="simple-board">
-      <div ng-model="ctrl.boards" ng-repeat="board in boards" ng-click="ctrl.setEditedBoard(board)">
-        <h1> {{board.title}} </h1>
-        <h2> {{board.description}} </h2>
-        <p> Public: {{board.isPublic}} </p>
-      </div>
+      class="simple-board" ng-model="ctrl.boards" ng-repeat="(boardId, board) in ctrl.boards" ng-click="ctrl.setEditedBoard(boardId, board)">
+      <h1> {{board.title}} </h1>
+      <h4> {{board.description}} </h4>
+      <p> Public: {{board.isPublic ? 'yes' : 'no'}} </p>
     </div>
 
   </div>
@@ -24,7 +22,21 @@
       name="ctrl.createForm"
       class="create-form"
       role="form"
+      ng-submit="ctrl.createBoard(ctrl.newBoard, ctrl.createForm.$valid)"
       novalidate>
+      <input ng-model="ctrl.newBoard.title" type="text" placeholder="Title" required="true">
+      <input ng-model="ctrl.newBoard.description" type="text" placeholder="Description">
+      <label>
+        <input type="radio" ng-model="ctrl.newBoard.isPublic" value="true">
+        Public
+      </label>       
+      <label>
+        <input type="radio" ng-model="ctrl.newBoard.isPublic" value="false">
+        Private
+      </label>
+      <button type="submit">Submit</button>
+      <p> {{ctrl.newBoard}} </p>  
+      <p> {{ctrl.createForm}} </p>
     </form>
   </div>
   <!-- EDITING -->
@@ -35,7 +47,21 @@
       name="ctrl.updateForm"
       class="edit-form"
       role="form"
+      ng-submit="ctrl.updateBoard(ctrl.editedBoardId, ctrl.editedBoard, ctrl.updateForm.$valid)"
       novalidate>
+      <input ng-model="ctrl.editedBoard.title" type="text" placeholder="Title">
+      <input ng-model="ctrl.editedBoard.description" type="text" placeholder="Description">
+      <label>
+        <input type="radio" ng-model="ctrl.editedBoard.isPublic" value="true">
+        Public
+      </label>       
+      <label>
+        <input type="radio" ng-model="ctrl.editedBoard.isPublic" value="false">
+        Private
+      </label>
+      <button type="button" ng-click="ctrl.cancelEditing()">Cancel editing</button>
+      <button type="submit">Update</button>
+      <p> {{ctrl.editedBoard}} </p>  
     </form>
   </div>
 </div>
