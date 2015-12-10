@@ -12,6 +12,18 @@ angular.module('noterious')
       isPublic: false
     };
 
+    ctrl.getBoards = function(){
+      BoardsModel.all()
+        .then(function(boards) {
+          ctrl.boards = boards;
+        })
+        .catch(function(error) {
+        })
+        .finally(function() {
+
+        })
+    }
+
     ctrl.resetForm = function () {
       ctrl.loading = false;
       ctrl.newBoard = {
@@ -21,31 +33,19 @@ angular.module('noterious')
       };
     };
 
-    ctrl.getBoards = function () {
-      ctrl.boards = {
-        1: {
-          description: "Anything and everything!",
-          isPublic: true,
-          title: "Random Ideas"
-        },
-        2: {
-          description: "BizDev Ideas",
-          isPublic: false,
-          title: "Hustle"
-        },
-        3: {
-          description: "this is a test",
-          isPublic: false,
-          title: "testing"
-        }
-      };
-    };
-
     ctrl.createBoard = function (board, isValid) {
       if (isValid) {
         ctrl.loading = true;
-        // CREATE BOARD
-        ctrl.resetForm();
+        BoardsModel.create(board)
+          .then(function() {
+            ctrl.getBoards();
+          })
+          .catch(function(error) {
+            console.log(error);
+          })
+          .finally(function() {
+            ctrl.resetForm();
+          }) 
       }
     };
 
@@ -53,14 +53,32 @@ angular.module('noterious')
       if (isValid) {
         ctrl.loading = true;
         // UPDATE BOARD
-        ctrl.cancelEditing();
+        BoardsModel.update(boardId, board)
+          .then(function() {
+            ctrl.getBoards();
+          })
+          .catch(function(error) {
+            console.log(error);
+          })
+          .finally(function(){
+            ctrl.cancelEditing();
+          })
       }
     };
 
     ctrl.deleteBoard = function (boardId) {
       ctrl.loading = true;
       // DELETE BOARD
-      ctrl.cancelEditing();
+      BoardsModel.destroy(boardId)
+        .then(function() {
+          ctrl.getBoards();
+        })
+        .catch(function(error) {
+          console.log(error);
+        })
+        .finally(function() {
+          ctrl.cancelEditing();
+        })
     };
 
     ctrl.setEditedBoard = function (boardId, board) {
