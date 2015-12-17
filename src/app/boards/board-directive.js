@@ -1,21 +1,23 @@
 angular.module('noterious')
   .directive('board', function() {
 
-    var link = function(scope, element, attrs) {
+    var link = function(scope, element, attrs, controller) {
       $(element).hover(function() {
         $(this).css('color', 'blue');
+        scope.incrementCount();
       }, function() {
         $(this).css('color', 'orange');
       });
     }
 
-    var controller = function() {
+    var controller = function($scope) {
       var ctrl = this;
 
       ctrl.count = 0;
 
-      ctrl.incrementCount = function() {
+      $scope.incrementCount = function() {
         ctrl.count ++;
+        console.log(ctrl.count);
       }
     }
 
@@ -24,7 +26,6 @@ angular.module('noterious')
       scope: true,
       templateUrl: 'app/boards/board-directive.tmpl.html',
       link: link,
-      controller: controller,
-      controllerAs: 'myCtrl'
+      controller: controller
     }
   })
