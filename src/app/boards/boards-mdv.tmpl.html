@@ -4,7 +4,7 @@
       board
       class="simple-board"
       ng-repeat="(boardId, board) in ctrl.boards"
-      ng-click="ctrl.setEditedBoard(boardId, board)"
+      ng-click="ctrl.setEditedBoard(boardId, board);myCtrl.incrementCount();"
       ng-class="{
         'active': ctrl.isCurrentBoard(boardId)
       }">
